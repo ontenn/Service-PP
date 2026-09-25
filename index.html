@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ЖК «Панорама парк» — заявки жителей</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1B4F9C; --blue-d:#123A76; --blue-l:#E9F0FB; --blue-m:#3A6FC4;
+  --orange:#F28C1E; --orange-d:#D8740A; --orange-l:#FFF3E5;
+  --bg:#FFFFFF; --soft:#F5F8FD; --line:#E1E8F3;
+  --text:#1B2433; --muted:#5E6B80;
+  --green:#1E9E6A; --green-l:#E4F6EE; --red:#D6423A; --red-l:#FDECEB;
+  --r:16px; --shadow:0 6px 24px rgba(27,79,156,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 "Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+h1,h2,h3{line-height:1.2;margin:0 0 .5em}
+h2{font-size:clamp(1.5rem,3.2vw,2.1rem);font-weight:800;color:var(--blue-d)}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0 0 1em}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+section{padding:64px 0}
+.eyebrow{display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-d);margin-bottom:10px}
+.lead{color:var(--muted);max-width:680px;font-size:1.05rem}
+svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--blue-d);font-weight:800;font-size:1.1rem;line-height:1.1}
+.logo small{display:block;font-weight:600;font-size:.72rem;color:var(--muted)}
+.logo-mark{width:40px;height:40px;border-radius:12px;background:var(--blue);display:grid;place-items:center;color:#fff;position:relative}
+.logo-mark::after{content:"";position:absolute;right:-3px;top:-3px;width:12px;height:12px;border-radius:50%;background:var(--orange);border:2px solid #fff}
+nav.tabs{display:flex;gap:6px;background:var(--soft);padding:5px;border-radius:999px;border:1px solid var(--line)}
+nav.tabs button{border:0;background:transparent;font:inherit;font-weight:700;font-size:.92rem;color:var(--muted);padding:9px 18px;border-radius:999px;cursor:pointer;white-space:nowrap}
+nav.tabs button.on{background:var(--blue);color:#fff;box-shadow:0 4px 12px rgba(27,79,156,.25)}
+.hdr-phone{font-weight:800;color:var(--blue-d);text-decoration:none;white-space:nowrap}
+.hdr-phone span{display:block;font-size:.72rem;font-weight:600;color:var(--muted)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;font:inherit;font-weight:700;padding:13px 22px;cursor:pointer;text-decoration:none;transition:.15s}
+.btn-o{background:var(--orange);color:#fff;box-shadow:0 6px 16px rgba(242,140,30,.3)}
+.btn-o:hover{background:var(--orange-d)}
+.btn-b{background:var(--blue);color:#fff}
+.btn-b:hover{background:var(--blue-d)}
+.btn-w{background:#fff;color:var(--blue-d);border:1.5px solid var(--line)}
+.btn-w:hover{border-color:var(--blue-m)}
+.btn-sm{padding:8px 14px;font-size:.88rem;border-radius:10px}
+
+/* hero */
+.hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue) 60%,var(--blue-m) 100%);color:#fff;padding:64px 0 72px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:rgba(242,140,30,.18)}
+.hero::after{content:"";position:absolute;right:120px;bottom:-160px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center;position:relative;z-index:1}
+.hero h1{font-size:clamp(2rem,5vw,3.1rem);font-weight:800;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:#FFC27A}
+.hero p{color:rgba(255,255,255,.86);font-size:1.08rem;max-width:560px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.hero .btn-w{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.35)}
+.hero-card{background:#fff;color:var(--text);border-radius:20px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+.hero-card h3{color:var(--blue-d)}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.hero-stats div{background:var(--soft);border-radius:12px;padding:12px;text-align:center}
+.hero-stats b{display:block;font-size:1.5rem;color:var(--blue);font-weight:800}
+.hero-stats span{font-size:.75rem;color:var(--muted);line-height:1.2;display:block}
+.track{display:flex;gap:8px}
+.track input{flex:1;min-width:0}
+.track-res{margin-top:12px;font-size:.92rem}
+
+/* services */
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px}
+.svc{background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:20px;cursor:pointer;transition:.18s;text-align:left;font:inherit;color:inherit;display:flex;flex-direction:column;gap:6px}
+.svc:hover{border-color:var(--blue-m);box-shadow:var(--shadow);transform:translateY(-2px)}
+.svc .ico{width:48px;height:48px;border-radius:14px;background:var(--blue-l);color:var(--blue);display:grid;place-items:center;margin-bottom:6px}
+.svc:nth-child(even) .ico{background:var(--orange-l);color:var(--orange-d)}
+.svc h3{margin:0}
+.svc p{font-size:.88rem;color:var(--muted);margin:0;flex:1}
+.svc .sla{font-size:.78rem;font-weight:700;color:var(--blue);margin-top:8px}
+.svc .go{font-size:.85rem;font-weight:700;color:var(--orange-d)}
+
+/* form */
+.form-sec{background:var(--soft)}
+.form-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:32px;align-items:start}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)}
+.fields{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;font-weight:700;color:var(--muted)}
+.f.c2{grid-column:span 2}.f.c4{grid-column:1/-1}
+input,select,textarea{font:inherit;font-size:.98rem;color:var(--text);background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;outline:none;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue-m);box-shadow:0 0 0 3px rgba(58,111,196,.15)}
+textarea{min-height:110px;resize:vertical}
+.prio-pick{display:flex;gap:8px;flex-wrap:wrap}
+.prio-pick label{flex:1;min-width:100px;position:relative}
+.prio-pick input{position:absolute;opacity:0;pointer-events:none}
+.prio-pick span{display:block;text-align:center;padding:10px;border:1.5px solid var(--line);border-radius:10px;font-weight:700;color:var(--text);cursor:pointer;font-size:.9rem}
+.prio-pick input:checked+span{border-color:var(--blue);background:var(--blue-l);color:var(--blue-d)}
+.prio-pick input[value=emergency]:checked+span{border-color:var(--red);background:var(--red-l);color:var(--red)}
+.prio-pick input[value=urgent]:checked+span{border-color:var(--orange);background:var(--orange-l);color:var(--orange-d)}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;color:var(--muted);font-weight:500}
+.agree input{width:18px;height:18px;flex:none;margin-top:2px;accent-color:var(--blue)}
+.info-list{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:14px}
+.info-list li{display:flex;gap:12px;align-items:flex-start}
+.info-list .dot{width:36px;height:36px;border-radius:10px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;color:var(--blue);flex:none}
+.info-list b{display:block}
+.info-list span{font-size:.9rem;color:var(--muted)}
+.emerg{margin-top:22px;background:var(--red-l);border-left:4px solid var(--red);border-radius:10px;padding:14px 16px;font-size:.92rem}
+.emerg b{color:var(--red)}
+
+/* checklist steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;counter-reset:s}
+.step{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 20px 20px 20px}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:20px;width:32px;height:32px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;display:grid;place-items:center;box-shadow:0 4px 10px rgba(242,140,30,.35)}
+.step h3{margin-top:10px;color:var(--blue-d)}
+.step ul{margin:0;padding:0;list-style:none;font-size:.9rem;color:var(--muted)}
+.step li{padding-left:24px;position:relative;margin-bottom:5px}
+.step li::before{content:"";position:absolute;left:2px;top:6px;width:12px;height:7px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(-45deg)}
+.step .when{display:inline-block;margin-top:10px;font-size:.78rem;font-weight:700;color:var(--blue);background:var(--blue-l);padding:3px 10px;border-radius:999px}
+.standards{margin-top:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.standards div{display:flex;gap:10px;align-items:center;background:var(--blue-l);border-radius:12px;padding:14px;font-size:.9rem;font-weight:600;color:var(--blue-d)}
+
+footer{background:var(--blue-d);color:rgba(255,255,255,.8);padding:36px 0;font-size:.9rem}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer b{color:#fff}
+
+/* control page */
+.ctl-head{background:var(--soft);border-bottom:1px solid var(--line);padding:36px 0 28px}
+.ctl-head .row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:22px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi span{font-size:.78rem;color:var(--muted);font-weight:600;display:block}
+.kpi b{font-size:1.7rem;font-weight:800;color:var(--blue-d);line-height:1.2}
+.kpi.warn b{color:var(--red)}
+.kpi.ok b{color:var(--green)}
+.kpi.acc b{color:var(--orange-d)}
+.ctl-body{padding:32px 0 64px}
+.ctl-grid{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.filters input{flex:2;min-width:180px}
+.filters select{flex:1;min-width:140px;width:auto}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font:inherit;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip i{font-style:normal;opacity:.7;margin-left:4px}
+.req-list{display:grid;gap:14px}
+.req{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;border-left:5px solid var(--blue-m)}
+.req.p-urgent{border-left-color:var(--orange)}
+.req.p-emergency{border-left-color:var(--red)}
+.req.s-done{border-left-color:var(--green);opacity:.92}
+.req-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.req-top .num{font-weight:800;color:var(--blue-d);margin-right:4px}
+.badge{font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.b-new{background:var(--blue-l);color:var(--blue)}
+.b-work{background:var(--orange-l);color:var(--orange-d)}
+.b-check{background:#EEE9FB;color:#5B3FB5}
+.b-done{background:var(--green-l);color:var(--green)}
+.b-red{background:var(--red-l);color:var(--red)}
+.b-org{background:var(--orange);color:#fff}
+.req-where{display:flex;gap:8px;align-items:center;font-weight:700;font-size:.95rem;color:var(--text)}
+.req-where svg{color:var(--blue);width:20px;height:20px}
+.req-text{margin:8px 0;font-size:.95rem}
+.req-meta{font-size:.8rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.req-ctl{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.req-ctl label{font-size:.75rem;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.req-ctl select,.req-ctl input{padding:8px 10px;font-size:.9rem}
+details.cl{margin-top:12px}
+details.cl summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;font-size:.85rem;font-weight:700;color:var(--blue-d)}
+details.cl summary::-webkit-details-marker{display:none}
+details.cl summary::after{content:"▾";color:var(--muted);transition:.15s}
+details.cl[open] summary::after{transform:rotate(180deg)}
+.pbar{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden;max-width:220px}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue-m),var(--orange));border-radius:99px;transition:width .3s}
+.cl-items{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:10px}
+.cl-items label{display:flex;gap:8px;align-items:center;font-size:.88rem;cursor:pointer}
+.cl-items input{width:17px;height:17px;accent-color:var(--green);flex:none}
+.cl-items input:checked+span{color:var(--muted);text-decoration:line-through}
+.empty{text-align:center;color:var(--muted);padding:40px;border:2px dashed var(--line);border-radius:var(--r)}
+.side{display:grid;gap:16px;position:sticky;top:88px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.panel h3{font-size:1rem;color:var(--blue-d);margin-bottom:14px}
+.bars{display:grid;gap:10px}
+.bar-row{font-size:.82rem}
+.bar-row .lbl{display:flex;justify-content:space-between;margin-bottom:4px;font-weight:600}
+.bar-row .lbl b{color:var(--blue-d)}
+.bar{height:8px;background:var(--soft);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--blue-m);border-radius:99px}
+.bar.o i{background:var(--orange)}
+.stack{display:flex;height:14px;border-radius:99px;overflow:hidden;background:var(--soft)}
+.stack i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-size:.78rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;background:var(--c);vertical-align:-1px}
+.ring{display:flex;align-items:center;gap:16px}
+.ring svg{width:92px;height:92px;flex:none}
+.ring p{font-size:.85rem;color:var(--muted);margin:0}
+.od-list{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:.85rem}
+.od-list li{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--red-l);border-radius:8px}
+.od-list li b{color:var(--red)}
+
+/* modal / toast */
+.modal{position:fixed;inset:0;background:rgba(18,36,70,.5);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.on{display:flex}
+.modal .card{max-width:440px;text-align:center}
+.modal .ok{width:64px;height:64px;border-radius:50%;background:var(--green-l);color:var(--green);display:grid;place-items:center;margin:0 auto 14px}
+.modal .ok svg{width:34px;height:34px;stroke-width:2.5}
+.modal .big{font-size:1.8rem;font-weight:800;color:var(--blue);letter-spacing:.03em}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(100px);background:var(--blue-d);color:#fff;padding:12px 20px;border-radius:12px;font-weight:600;font-size:.9rem;z-index:60;transition:.25s;box-shadow:0 10px 30px rgba(0,0,0,.2);max-width:calc(100% - 32px)}
+.toast.on{transform:translateX(-50%) translateY(0)}
+[hidden]{display:none!important}
+
+/* ideas */
+.ideas-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:28px;align-items:start;margin-top:28px}
+.idea-list{display:grid;gap:12px}
+.idea{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.idea-body{flex:1;min-width:0}
+.like{flex:none;display:flex;flex-direction:column;align-items:center;gap:0;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:6px 10px;min-width:58px;cursor:pointer;font:inherit;font-weight:800;color:var(--blue-d);line-height:1.2}
+.like small{font-size:.66rem;font-weight:700;color:var(--muted)}
+.like.on{background:var(--orange-l);border-color:var(--orange);color:var(--orange-d)}
+.idea h4{margin:0 0 4px;font-size:1rem;color:var(--text)}
+.idea p{margin:0 0 6px;font-size:.92rem;overflow-wrap:anywhere}
+.idea .meta{font-size:.78rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.reply{margin-top:10px;background:var(--blue-l);border-radius:10px;padding:8px 12px;font-size:.86rem}
+.reply b{color:var(--blue-d)}
+.idea-adm{display:grid;grid-template-columns:200px 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.idea-adm label{font-size:.75rem;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.idea-adm select,.idea-adm textarea{padding:8px 10px;font-size:.9rem}
+.idea-adm textarea{min-height:42px}
+.subtabs{margin:20px 0 0}
+
+/* send to executor */
+.send-btns{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 8px}
+.send-btns .btn{flex:1;min-width:110px;padding:11px 14px}
+.btn-wa{background:#1FAF5A;color:#fff}.btn-wa:hover{background:#178C48}
+.btn-tg{background:#229ED9;color:#fff}.btn-tg:hover{background:#1A86BA}
+.btn.off{opacity:.4;pointer-events:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.req-send{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:.8rem;color:var(--muted)}
+.req-send .sent{color:var(--green);font-weight:700}
+.req-send .unsent{color:var(--orange-d);font-weight:700}
+.exec-row{display:grid;grid-template-columns:1fr 210px 110px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.exec-row:last-child{border-bottom:0}
+.exec-row input{padding:8px 10px;font-size:.9rem}
+.exec-row small{color:var(--muted)}
+@media (max-width:820px){.ideas-grid{grid-template-columns:1fr}}
+@media (max-width:600px){
+  .idea{padding:14px}
+  .idea-adm{grid-template-columns:1fr}
+  .exec-row{grid-template-columns:1fr 1fr}
+  .exec-row>div:first-child{grid-column:1/-1}
+}
+
+/* responsive */
+@media (max-width:1000px){
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .kpis{grid-template-columns:repeat(3,1fr)}
+  .ctl-grid{grid-template-columns:1fr}
+  .side{position:static;grid-template-columns:1fr 1fr}
+  .standards{grid-template-columns:1fr 1fr}
+  .hdr-phone{display:none}
+}
+@media (max-width:820px){
+  .hero-grid,.form-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  body{font-size:15px}
+  .wrap{padding:0 16px}
+  section{padding:44px 0}
+  .hdr{height:60px}
+  .logo small{display:none}
+  .logo-mark{width:34px;height:34px;border-radius:10px}
+  nav.tabs button{padding:8px 12px;font-size:.82rem}
+  .hero{padding:40px 0 48px}
+  .hero .actions .btn{flex:1}
+  .svc-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .svc{padding:14px}
+  .svc p{display:none}
+  .svc .ico{width:40px;height:40px}
+  .svc h3{font-size:.95rem}
+  .card{padding:20px}
+  .fields{grid-template-columns:1fr 1fr}
+  .f.c2{grid-column:1/-1}
+  .steps,.standards{grid-template-columns:1fr}
+  .steps{gap:24px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .side{grid-template-columns:1fr}
+  .req{padding:16px}
+  .req-ctl{grid-template-columns:1fr 1fr}
+  .req-ctl label:first-child{grid-column:1/-1}
+  .cl-items{grid-template-columns:1fr}
+  .filters select{min-width:calc(50% - 5px)}
+}
+@media (max-width:380px){
+  .logo span.nm{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hdr">
+    <a class="logo" href="#home" data-go="home">
+      <div class="logo-mark"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6"/></svg></div>
+      <span class="nm">Сервис «Умный дом»<small>ЖК «Панорама парк» · дома 41, 41А, 41В</small></span>
+    </a>
+    <nav class="tabs" aria-label="Разделы">
+      <button data-go="home" class="on">Жителям</button>
+      <button data-go="control" id="adm-tab"><svg class="i" viewBox="0 0 24 24" style="width:15px;height:15px;vertical-align:-2px;margin-right:4px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Администратор</button>
+    </nav>
+    <a class="hdr-phone" href="tel:+77028863888"><span>Диспетчерская 24/7</span>+7 (702) 886-38-88</a>
+  </div>
+</header>
+
+<!-- ============ PAGE 1: ЖИТЕЛЯМ ============ -->
+<main id="page-home" class="page">
+
+  <section class="hero" id="welcome">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow" style="color:#FFC27A">ЖК «Панорама парк» · сервис для жителей</span>
+        <h1>Здравствуйте, соседи! <em>Мы рядом</em>, чтобы дома было уютно</h1>
+        <p>Перегорела лампочка, не работает лифт или нужно убрать двор? Оставьте заявку за пару минут — диспетчер примет её, назначит мастера и срок, а вы сможете следить за выполнением.</p>
+        <div class="actions">
+          <a class="btn btn-o" href="#request">Оставить заявку</a>
+          <a class="btn btn-w" href="#services">Виды услуг</a>
+          <a class="btn btn-w" href="#ideas">Предложить идею</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>Работаем для вас</h3>
+        <div class="hero-stats">
+          <div><b id="hs-total">0</b><span>заявок принято</span></div>
+          <div><b id="hs-done">0%</b><span>выполнено</span></div>
+          <div><b>24/7</b><span>аварийная служба</span></div>
+        </div>
+        <label class="f" for="track-in">Проверить статус заявки</label>
+        <div class="track" style="margin-top:6px">
+          <input id="track-in" placeholder="Номер, например Z-1003" autocomplete="off">
+          <button class="btn btn-b btn-sm" id="track-btn">Найти</button>
+        </div>
+        <div class="track-res" id="track-res"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <span class="eyebrow">Виды услуг</span>
+      <h2>С чем мы поможем</h2>
+      <p class="lead">Выберите категорию — мы подставим её в заявку. Исполнитель по заявке назначается в течение 24 часов, по аварийным заявкам — немедленно.</p>
+      <div class="svc-grid" id="svc-grid"></div>
+    </div>
+  </section>
+
+  <section class="form-sec" id="request">
+    <div class="wrap form-grid">
+      <div>
+        <span class="eyebrow">Заявка</span>
+        <h2>Опишите проблему</h2>
+        <p class="lead">Чем точнее адрес и описание, тем быстрее мастер придёт с нужными инструментами и материалами.</p>
+        <ul class="info-list">
+          <li><div class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div><div><b>Приём за 15 минут</b><span>Диспетчер зарегистрирует заявку и позвонит при необходимости</span></div></li>
+          <li><div class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div><div><b>Назначим исполнителя</b><span>Ответственный мастер и срок выполнения — по каждой заявке</span></div></li>
+          <li><div class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></div><div><b>Контроль качества</b><span>Фотоотчёт, проверка мастером участка и ваше подтверждение</span></div></li>
+        </ul>
+        <div class="emerg"><b>Авария?</b> Затопление, запах газа, искрит проводка, человек в лифте — звоните сразу: <a href="tel:+77028863888"><b>+7 (702) 886-38-88</b></a></div>
+      </div>
+
+      <form class="card" id="req-form" novalidate>
+        <div class="fields">
+          <label class="f c4">Вид работ
+            <select name="cat" id="f-cat" required></select>
+          </label>
+          <label class="f c2">Дом
+            <select name="house" required>
+              <option value="">Выберите</option>
+              <option>Дом 41</option><option>Дом 41А</option><option>Дом 41В</option>
+            </select>
+          </label>
+          <label class="f">Подъезд<input name="entr" inputmode="numeric" maxlength="2" placeholder="1"></label>
+          <label class="f">Этаж<input name="floor" inputmode="numeric" maxlength="2" placeholder="5"></label>
+          <label class="f c2">Квартира / место<input name="apt" placeholder="кв. 45 или «детская площадка»"></label>
+          <label class="f c2">Ваше имя<input name="name" required placeholder="Айгуль"></label>
+          <label class="f c2">Телефон<input name="phone" type="tel" required placeholder="+7 (___) ___-__-__"></label>
+          <label class="f c2">Удобное время визита
+            <select name="time"><option>Любое</option><option>Утро 9–12</option><option>День 12–16</option><option>Вечер 16–20</option></select>
+          </label>
+          <label class="f c4">Что случилось?
+            <textarea name="text" required placeholder="Например: на 5 этаже во 2 подъезде не горит лампочка возле лифта"></textarea>
+          </label>
+          <div class="f c4">Срочность
+            <div class="prio-pick">
+              <label><input type="radio" name="prio" value="normal" checked><span>Обычная</span></label>
+              <label><input type="radio" name="prio" value="urgent"><span>Срочная</span></label>
+              <label><input type="radio" name="prio" value="emergency"><span>Аварийная</span></label>
+            </div>
+          </div>
+          <label class="agree c4" style="grid-column:1/-1"><input type="checkbox" name="agree" required> Согласен(на) на обработку персональных данных для выполнения заявки</label>
+          <div class="c4" style="grid-column:1/-1"><button class="btn btn-o" style="width:100%" type="submit">Отправить заявку</button></div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="checklist">
+    <div class="wrap">
+      <span class="eyebrow">Чек-лист</span>
+      <h2>Как мы проводим работы</h2>
+      <p class="lead">Каждая заявка проходит одни и те же шаги — так ничего не теряется, а вы всегда знаете, на каком этапе работа.</p>
+      <div class="steps" id="steps"></div>
+      <div class="standards">
+        <div><svg class="i" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/></svg>Техника безопасности и ограждение места работ</div>
+        <div><svg class="i" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg>Предупреждаем жителей об отключениях заранее</div>
+        <div><svg class="i" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>Убираем за собой мусор и материалы</div>
+        <div><svg class="i" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>Фотоотчёт «до» и «после» по каждой заявке</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-sec" id="ideas">
+    <div class="wrap">
+      <span class="eyebrow">Предложения</span>
+      <h2>Ваши идеи для нашего ЖК</h2>
+      <p class="lead">Что сделать удобнее, красивее, безопаснее? Поделитесь идеей и поддержите предложения соседей — самые популярные мы рассматриваем в первую очередь и отвечаем на каждое.</p>
+      <div class="ideas-grid">
+        <form class="card" id="idea-form" novalidate>
+          <div class="fields">
+            <label class="f c2">Тема<select name="topic" id="i-topic"></select></label>
+            <label class="f c2">Дом
+              <select name="house"><option>Весь ЖК</option><option>Дом 41</option><option>Дом 41А</option><option>Дом 41В</option></select>
+            </label>
+            <label class="f c4">Коротко об идее<input name="title" maxlength="80" placeholder="Например: велопарковка у подъездов"></label>
+            <label class="f c4">Подробнее<textarea name="text" placeholder="Опишите, что предлагаете и почему это полезно для жителей"></textarea></label>
+            <label class="f c4">Ваше имя<input name="name" placeholder="Можно оставить пустым"></label>
+            <div style="grid-column:1/-1"><button class="btn btn-o" style="width:100%" type="submit">Предложить идею</button></div>
+          </div>
+        </form>
+        <div>
+          <div class="chips" id="idea-sort">
+            <button type="button" class="chip on" data-sort="top">Популярные</button>
+            <button type="button" class="chip" data-sort="new">Новые</button>
+          </div>
+          <div class="idea-list" id="idea-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ PAGE 2: КОНТРОЛЬ ============ -->
+<main id="page-control" class="page" hidden>
+  <div class="ctl-head">
+    <div class="wrap">
+      <div class="row">
+        <div>
+          <span class="eyebrow">Диспетчерская</span>
+          <h2 style="margin:0">Контроль и мониторинг заявок</h2>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-w btn-sm" id="export-btn">Выгрузить CSV</button>
+          <button class="btn btn-w btn-sm" id="reset-btn">Демо-данные</button>
+          <button class="btn btn-b btn-sm" id="logout-btn">Выйти</button>
+        </div>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="chips subtabs" id="adm-tabs">
+        <button class="chip on" data-tab="req">Заявки</button>
+        <button class="chip" data-tab="ideas">Предложения жителей<i id="ideas-cnt"></i></button>
+        <button class="chip" data-tab="execs">Исполнители</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ctl-body">
+    <div class="wrap" id="adm-ideas" hidden>
+      <p class="lead" style="margin-bottom:16px">Меняйте статус предложения и пишите ответ — жители увидят его в разделе «Предложения».</p>
+      <div class="idea-list" id="adm-idea-list"></div>
+    </div>
+    <div class="wrap" id="adm-execs" hidden>
+      <div class="panel" style="max-width:760px">
+        <h3>Исполнители и телефоны</h3>
+        <p style="font-size:.88rem;color:var(--muted)">На эти номера отправляются задачи по SMS и в WhatsApp. Номер вводится в формате +7 7XX XXX XX XX.</p>
+        <div id="exec-edit"></div>
+      </div>
+    </div>
+    <div class="wrap ctl-grid" id="adm-req">
+      <div>
+        <div class="chips" id="st-chips"></div>
+        <div class="filters">
+          <input id="q" type="search" placeholder="Поиск: номер, адрес, текст, телефон">
+          <select id="fl-cat"></select>
+          <select id="fl-exec"></select>
+          <select id="fl-sort">
+            <option value="new">Сначала новые</option>
+            <option value="deadline">По сроку</option>
+            <option value="prio">По срочности</option>
+          </select>
+        </div>
+        <div class="req-list" id="req-list"></div>
+      </div>
+
+      <aside class="side">
+        <div class="panel">
+          <h3>Выполнение в срок</h3>
+          <div class="ring" id="ring"></div>
+        </div>
+        <div class="panel">
+          <h3>Статусы</h3>
+          <div id="st-stack"></div>
+        </div>
+        <div class="panel">
+          <h3>Заявки по видам услуг</h3>
+          <div class="bars" id="cat-bars"></div>
+        </div>
+        <div class="panel">
+          <h3>Загрузка исполнителей</h3>
+          <div class="bars" id="exec-bars"></div>
+        </div>
+        <div class="panel">
+          <h3>Просроченные</h3>
+          <ul class="od-list" id="od-list"></ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div><b>Сервис «Умный дом»</b> · ЖК «Панорама парк», дома 41, 41А, 41В<br>Офис: дом 41, 1 этаж · Пн–Пт 9:00–18:00</div>
+    <div>Диспетчерская 24/7: <a href="tel:+77028863888" style="color:#fff"><b>+7 (702) 886-38-88</b></a><br>Назначение исполнителей и сроков — только для администратора</div>
+  </div>
+</footer>
+
+<div class="modal" id="modal">
+  <div class="card">
+    <div class="ok"><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></div>
+    <h3>Заявка принята!</h3>
+    <p style="color:var(--muted);margin-bottom:6px">Номер вашей заявки:</p>
+    <div class="big" id="m-num">—</div>
+    <p style="color:var(--muted);font-size:.92rem;margin-top:10px" id="m-text"></p>
+    <button class="btn btn-b" style="width:100%" id="m-close">Хорошо</button>
+  </div>
+</div>
+<div class="modal" id="login">
+  <form class="card" id="login-form" style="text-align:left" novalidate>
+    <div class="ok" style="background:var(--blue-l);color:var(--blue)"><svg class="i" viewBox="0 0 24 24" style="stroke-width:2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+    <h3 style="text-align:center">Вход для администратора</h3>
+    <p style="color:var(--muted);font-size:.9rem;text-align:center">Назначение исполнителей, сроков и контроль заявок доступны только администратору.</p>
+    <label class="f" style="margin-bottom:12px">Логин<input name="login" autocomplete="username" required></label>
+    <label class="f" style="margin-bottom:8px">Пароль<input name="pass" type="password" autocomplete="current-password" required></label>
+    <div id="login-err" style="color:var(--red);font-size:.85rem;min-height:1.4em;margin-bottom:8px"></div>
+    <div style="display:flex;gap:10px">
+      <button type="button" class="btn btn-w" style="flex:1" id="login-cancel">Отмена</button>
+      <button type="submit" class="btn btn-b" style="flex:1">Войти</button>
+    </div>
+  </form>
+</div>
+<div class="modal" id="send">
+  <div class="card" style="text-align:left;max-width:540px;width:100%">
+    <h3 style="color:var(--blue-d)">Передать задачу исполнителю</h3>
+    <div id="send-to" style="font-size:.92rem;margin-bottom:10px"></div>
+    <label class="f">Текст сообщения (можно отредактировать)
+      <textarea id="send-text" style="min-height:220px;font-size:.9rem"></textarea>
+    </label>
+    <div class="send-btns">
+      <a class="btn btn-b" id="send-sms" data-via="SMS">SMS</a>
+      <a class="btn btn-wa" id="send-wa" data-via="WhatsApp" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-tg" id="send-tg" data-via="Telegram" target="_blank" rel="noopener">Telegram</a>
+      <button type="button" class="btn btn-w" id="send-copy" data-via="копия текста">Копировать</button>
+    </div>
+    <p style="font-size:.8rem;color:var(--muted);margin:0 0 14px">SMS и WhatsApp откроются на этом устройстве с готовым текстом и номером исполнителя — останется нажать «Отправить». В Telegram нужно выбрать контакт исполнителя.</p>
+    <button type="button" class="btn btn-w" style="width:100%" id="send-close">Закрыть</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+const ic = p => `<svg class="i" viewBox="0 0 24 24">${p}</svg>`;
+const CATS = [
+  {id:'entrance', name:'Подъезды и холлы', sla:72, d:'Покраска, двери, доводчики, почтовые ящики, окна, перила', i:'<rect x="6" y="3" width="12" height="18" rx="1"/><path d="M15 12h.01"/>'},
+  {id:'lift', name:'Лифты', sla:24, d:'Остановка, шум, кнопки, двери кабины, освещение в лифте', i:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 9l3-3 3 3M9 15l3 3 3-3"/>'},
+  {id:'comm', name:'Коммуникации', sla:24, d:'Водоснабжение, отопление, канализация, стояки, протечки', i:'<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>'},
+  {id:'light', name:'Электрика и лампочки', sla:24, d:'Замена ламп, освещение подъездов и двора, щитки', i:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>'},
+  {id:'yard', name:'Территория', sla:72, d:'Детские площадки, озеленение, парковка, ограждения, снег', i:'<path d="M12 22v-5M12 2l6 8h-3l4 6H5l4-6H6z"/>'},
+  {id:'clean', name:'Уборка', sla:24, d:'Влажная уборка подъездов, мытьё окон, уборка после ремонта', i:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>'},
+  {id:'waste', name:'Вывоз мусора', sla:24, d:'Контейнерные площадки, крупногабарит, мусоропровод', i:'<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14"/>'},
+  {id:'other', name:'Другое', sla:72, d:'Домофон, шлагбаум, видеонаблюдение, прочие вопросы', i:'<path d="M4 5h16v11H8l-4 4z"/>'}
+];
+const CAT = Object.fromEntries(CATS.map(c=>[c.id,c]));
+const EXECS = [
+  {id:'ivanov', name:'Иванов А. — сантехник', phone:'+7 (700) 000-00-01'},
+  {id:'petrov', name:'Петров С. — электрик', phone:'+7 (700) 000-00-02'},
+  {id:'sidorova', name:'Сидорова М. — клининг', phone:'+7 (700) 000-00-03'},
+  {id:'lift', name:'«ЛифтСервис» — подрядчик', phone:'+7 (700) 000-00-04'},
+  {id:'akhmetov', name:'Ахметов Р. — ремонт', phone:'+7 (700) 000-00-05'},
+  {id:'kim', name:'Ким Д. — дворник', phone:'+7 (700) 000-00-06'}
+];
+const LS_PH = 'uk_panorama_park_exec_phones_v1';
+try { const ph = JSON.parse(localStorage.getItem(LS_PH)) || {}; EXECS.forEach(e => { if (typeof ph[e.id]==='string') e.phone = ph[e.id]; }); } catch(e) {}
+const saveExecPhones = () => { try { localStorage.setItem(LS_PH, JSON.stringify(Object.fromEntries(EXECS.map(e=>[e.id,e.phone])))); } catch(e) {} };
+const EX = Object.fromEntries(EXECS.map(e=>[e.id,e]));
+const STATUS = {new:'Новая', work:'В работе', check:'На проверке', done:'Выполнена'};
+const PRIO = {normal:'Обычная', urgent:'Срочная', emergency:'Аварийная'};
+const PRIO_H = {normal:1, urgent:.5, emergency:.15};
+const STEPS = [
+  {t:'Приём заявки', w:'до 15 минут', l:['Регистрация и присвоение номера','Уточнение адреса и деталей','Определение срочности']},
+  {t:'Осмотр и диагностика', w:'до 24 часов', l:['Выезд мастера участка','Оценка объёма работ','Подбор материалов']},
+  {t:'Исполнитель и срок', w:'сразу после осмотра', l:['Назначение ответственного','Согласование срока с жителем','Уведомление о визите']},
+  {t:'Выполнение работ', w:'в согласованный срок', l:['Ограждение и безопасность','Работы по регламенту','Уборка после работ']},
+  {t:'Проверка качества', w:'в день завершения', l:['Фотоотчёт «до/после»','Приёмка мастером участка','Отметка в журнале']},
+  {t:'Подтверждение жителем', w:'1–2 дня', l:['Звонок или сообщение жителю','Оценка качества','Закрытие заявки']}
+];
+const STEP_SHORT = ['Заявка принята','Осмотр проведён','Назначен исполнитель и срок','Работы выполнены','Фотоотчёт и проверка качества','Житель подтвердил'];
+const LS = 'uk_panorama_park_requests_v3';
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const todayISO = () => isoDate(new Date());
+const fmtD = iso => { if(!iso) return '—'; const [y,m,d] = iso.slice(0,10).split('-'); return `${d}.${m}`; };
+const fmtDT = iso => { const d = new Date(iso); return `${pad(d.getDate())}.${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const addHours = (d,h) => new Date(d.getTime() + h*3600e3);
+
+function seed(){
+  const now = new Date();
+  const ago = h => addHours(now, -h);
+  const mk = (n, cat, house, entr, floor, apt, name, text, prio, status, exec, hAgo, stepsN, dlShiftDays) => {
+    const created = ago(hAgo);
+    let dl = addHours(created, CAT[cat].sla * PRIO_H[prio]);
+    if (dlShiftDays !== undefined) dl = addHours(now, dlShiftDays*24);
+    const steps = STEP_SHORT.map((_,i)=> i < stepsN);
+    const r = {id:'Z-'+n, cat, house, entr, floor, apt, name, phone:fmtPhone('770'+(10000000+(n*7919)%90000000)), text, prio, status, exec, created:created.toISOString(), deadline: (status==='new' && !exec) ? '' : isoDate(dl), steps, time:'Любое'};
+    if (status==='done') r.doneAt = isoDate(addHours(created, CAT[cat].sla*PRIO_H[prio]*.7));
+    return r;
+  };
+  return [
+    mk(1001,'light','Дом 41А','2','5','у лифта','Айгуль','Не горит лампочка на 5 этаже возле лифта, вечером очень темно.','normal','done','petrov',120,6),
+    mk(1002,'lift','Дом 41','1','','кабина','Сергей','Лифт останавливается между 7 и 8 этажами, двери открываются с рывком.','urgent','work','lift',30,3,-1),
+    mk(1003,'comm','Дом 41','3','9','кв. 112','Марина','Течёт стояк холодной воды в санузле, мокнет стена у соседей снизу.','emergency','check','ivanov',8,5),
+    mk(1004,'clean','Дом 41В','1','','холл 1 этажа','Ерлан','После переезда соседей в холле остались грязь и строительный мусор.','normal','new','',3,1),
+    mk(1005,'yard','Дом 41А','','','детская площадка','Ольга','Сломана доска на качелях у дома 41А, опасно для детей.','urgent','work','akhmetov',20,3,1),
+    mk(1006,'entrance','Дом 41В','2','1','входная группа','Дмитрий','Доводчик входной двери не работает, дверь хлопает.','normal','work','akhmetov',60,3,2),
+    mk(1007,'waste','Дом 41А','','','контейнерная площадка','Гульнара','Контейнеры переполнены, мусор не вывозили два дня.','urgent','done','kim',50,6),
+    mk(1008,'light','Дом 41','1','','двор','Тимур','Не работает уличный фонарь у парковки дома 41.','normal','new','',1,0),
+    mk(1009,'comm','Дом 41','2','3','кв. 34','Наталья','Батареи в квартире еле тёплые, в соседних — тоже.','normal','work','ivanov',70,3,-2),
+    mk(1010,'other','Дом 41В','','','шлагбаум','Алексей','Шлагбаум на въезде не реагирует на пульт.','normal','done','petrov',160,6),
+    mk(1011,'clean','Дом 41А','3','','лестница','Жанна','Давно не мыли лестничные пролёты с 1 по 4 этаж.','normal','check','sidorova',40,5)
+  ];
+}
+
+let state;
+try { state = JSON.parse(localStorage.getItem(LS)); } catch(e) {}
+if (!Array.isArray(state)) state = seed();
+function save(){ try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){} }
+save();
+
+const isOver = r => r.status !== 'done' && r.deadline && r.deadline < todayISO();
+const dk = r => r.deadline || '9999-99-99';
+const assignLate = r => !r.exec && r.status!=='done' && (Date.now() - new Date(r.created)) > 24*3600e3;
+const nextId = () => 'Z-' + (Math.max(1000, ...state.map(r => +r.id.slice(2) || 0)) + 1);
+
+/* ---------- toast ---------- */
+let tt;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('on'),2400); }
+
+/* ---------- admin access ---------- */
+// SHA-256 от строки "логин:пароль". Проверка на стороне браузера — для реальной защиты нужен сервер.
+const ADMIN_HASH = '62aa52d69075855e5ef7f4ddf32eba4f0fc1f80a4ebb07039feed256b9b78da9';
+const AUTH_KEY = 'uk_admin_session';
+let isAdmin = false;
+try { isAdmin = sessionStorage.getItem(AUTH_KEY) === ADMIN_HASH; } catch(e) {}
+async function sha256(s){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function openLogin(){
+  const lf = $('#login-form'); lf.reset(); $('#login-err').textContent = '';
+  $('#login').classList.add('on');
+  setTimeout(()=>lf.elements.login.focus(), 50);
+}
+$('#login-cancel').addEventListener('click', ()=> $('#login').classList.remove('on'));
+$('#login').addEventListener('click', e => { if(e.target.id==='login') e.currentTarget.classList.remove('on'); });
+$('#login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const el = e.target.elements, err = $('#login-err');
+  if (!window.crypto || !crypto.subtle){ err.textContent = 'Вход недоступен: откройте сайт по https.'; return; }
+  const h = await sha256(el.login.value.trim() + ':' + el.pass.value);
+  if (h !== ADMIN_HASH){ err.textContent = 'Неверный логин или пароль'; el.pass.value=''; el.pass.focus(); return; }
+  isAdmin = true;
+  try { sessionStorage.setItem(AUTH_KEY, ADMIN_HASH); } catch(e) {}
+  $('#login').classList.remove('on');
+  toast('Вы вошли как администратор');
+  go('control');
+});
+$('#logout-btn').addEventListener('click', () => {
+  isAdmin = false;
+  try { sessionStorage.removeItem(AUTH_KEY); } catch(e) {}
+  go('home'); toast('Вы вышли из режима администратора');
+});
+
+/* ---------- routing ---------- */
+function go(page, push=true){
+  if (page==='control' && !isAdmin){ page = 'home'; push = true; openLogin(); }
+  document.querySelectorAll('.page').forEach(p => p.hidden = p.id !== 'page-'+page);
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.go===page));
+  if (push) history.replaceState(null,'', page==='control' ? '#control' : '#home');
+  window.scrollTo(0,0);
+  if (page==='control') renderControl(); else renderHomeStats();
+}
+document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); go(b.dataset.go); }));
+
+/* ---------- page 1 ---------- */
+$('#svc-grid').innerHTML = CATS.map(c => `
+  <button class="svc" data-cat="${c.id}">
+    <div class="ico">${ic(c.i)}</div>
+    <h3>${c.name}</h3>
+    <p>${c.d}</p>
+    <div class="sla">Срок назначения исполнителя: 24 ч</div>
+    <div class="go">Оставить заявку →</div>
+  </button>`).join('');
+$('#svc-grid').addEventListener('click', e => {
+  const b = e.target.closest('.svc'); if(!b) return;
+  $('#f-cat').value = b.dataset.cat;
+  $('#request').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>$('#req-form [name=house]').focus({preventScroll:true}), 500);
+});
+$('#f-cat').innerHTML = '<option value="">Выберите вид работ</option>' + CATS.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+
+$('#steps').innerHTML = STEPS.map(s => `
+  <div class="step"><h3>${s.t}</h3><ul>${s.l.map(x=>`<li>${x}</li>`).join('')}</ul><span class="when">${s.w}</span></div>`).join('');
+
+function renderHomeStats(){
+  $('#hs-total').textContent = state.length;
+  const d = state.filter(r=>r.status==='done').length;
+  $('#hs-done').textContent = state.length ? Math.round(d/state.length*100)+'%' : '0%';
+}
+
+const form = $('#req-form');
+form.elements.phone.addEventListener('input', e => {
+  e.target.value = fmtPhone(e.target.value);
+});
+function fmtPhone(raw){
+  let v = raw.replace(/\D/g,'');
+  if (!v) return '';
+  if (v[0]==='8') v = '7'+v.slice(1);
+  if (v[0]!=='7') v = '7'+v;
+  v = v.slice(0,11);
+  let o = '+7';
+  if (v.length>1) o += ' ('+v.slice(1,4);
+  if (v.length>=4) o += ') '+v.slice(4,7);
+  if (v.length>=7) o += '-'+v.slice(7,9);
+  if (v.length>=9) o += '-'+v.slice(9,11);
+  return o;
+}
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = form.elements, bad = [];
+  if (!f.cat.value) bad.push(f.cat);
+  if (!f.house.value) bad.push(f.house);
+  if (!f.name.value.trim()) bad.push(f.name);
+  if (f.phone.value.replace(/\D/g,'').length < 11) bad.push(f.phone);
+  if (f.text.value.trim().length < 5) bad.push(f.text);
+  form.querySelectorAll('input,select,textarea').forEach(x=>x.style.borderColor='');
+  bad.forEach(x => x.style.borderColor = 'var(--red)');
+  if (bad.length){ bad[0].focus(); toast('Заполните отмеченные поля'); return; }
+  if (!f.agree.checked){ toast('Нужно согласие на обработку данных'); return; }
+  const prio = f.prio.value, now = new Date();
+  const r = {
+    id: nextId(), cat:f.cat.value, house:f.house.value, entr:f.entr.value.trim(), floor:f.floor.value.trim(),
+    apt:f.apt.value.trim(), name:f.name.value.trim(), phone:f.phone.value, time:f.time.value,
+    text:f.text.value.trim(), prio, status:'new', exec:'', created:now.toISOString(),
+    deadline: '', steps: STEP_SHORT.map(()=>false)
+  };
+  state.unshift(r); save(); renderHomeStats();
+  $('#m-num').textContent = r.id;
+  $('#m-text').textContent = 'Исполнитель будет назначен в течение 24 часов, срок выполнения установит администратор. Сохраните номер, чтобы проверить статус.' + (prio==='emergency' ? ' Для аварии обязательно позвоните в диспетчерскую!' : '');
+  $('#modal').classList.add('on');
+  form.reset();
+});
+$('#m-close').addEventListener('click', ()=> $('#modal').classList.remove('on'));
+$('#modal').addEventListener('click', e => { if(e.target.id==='modal') e.currentTarget.classList.remove('on'); });
+
+function track(){
+  const q = $('#track-in').value.trim().toUpperCase().replace(/^Z?-?/, 'Z-');
+  const r = state.find(x => x.id === q), out = $('#track-res');
+  if (!$('#track-in').value.trim()) { out.innerHTML=''; return; }
+  if (!r) { out.innerHTML = '<span style="color:var(--red)">Заявка не найдена. Проверьте номер.</span>'; return; }
+  const done = r.steps.filter(Boolean).length;
+  out.innerHTML = `<b>${r.id}</b> · ${CAT[r.cat].name} · <span class="badge b-${r.status}">${STATUS[r.status]}</span>
+    <div style="margin-top:8px;display:flex;align-items:center;gap:10px"><div class="pbar" style="max-width:none"><i style="width:${done/6*100}%"></i></div><small>${done}/6</small></div>
+    <small style="color:var(--muted)">Исполнитель: ${r.exec ? esc(EX[r.exec].name) : 'назначается'} · срок: ${r.deadline ? 'до '+fmtD(r.deadline) : 'назначит администратор'}</small>`;
+}
+$('#track-btn').addEventListener('click', track);
+$('#track-in').addEventListener('keydown', e => { if(e.key==='Enter') track(); });
+
+/* ---------- page 2 ---------- */
+const flt = {st:'all', q:'', cat:'', exec:'', sort:'new'};
+$('#fl-cat').innerHTML = '<option value="">Все виды услуг</option>' + CATS.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+$('#fl-exec').innerHTML = '<option value="">Все исполнители</option><option value="-">Не назначен</option>' + EXECS.map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
+$('#q').addEventListener('input', e => { flt.q = e.target.value.toLowerCase(); renderList(); });
+$('#fl-cat').addEventListener('change', e => { flt.cat = e.target.value; renderList(); });
+$('#fl-exec').addEventListener('change', e => { flt.exec = e.target.value; renderList(); });
+$('#fl-sort').addEventListener('change', e => { flt.sort = e.target.value; renderList(); });
+$('#st-chips').addEventListener('click', e => { const c = e.target.closest('.chip'); if(!c) return; flt.st = c.dataset.st; renderControl(); });
+
+function renderControl(){ renderKpis(); renderChips(); renderList(); renderSide(); }
+
+function renderKpis(){
+  const n = s => state.filter(r=>r.status===s).length;
+  const over = state.filter(isOver).length;
+  const done = state.filter(r=>r.status==='done');
+  const onTime = done.filter(r=>!r.doneAt || !r.deadline || r.doneAt <= r.deadline).length;
+  $('#kpis').innerHTML = [
+    ['Всего заявок', state.length, ''],
+    ['Новые', n('new'), 'acc'],
+    ['В работе', n('work') + n('check'), ''],
+    ['Выполнено', done.length, 'ok'],
+    ['Просрочено', over, over ? 'warn' : ''],
+    ['В срок', done.length ? Math.round(onTime/done.length*100)+'%' : '—', 'ok']
+  ].map(([l,v,c]) => `<div class="kpi ${c}"><span>${l}</span><b>${v}</b></div>`).join('');
+}
+
+function renderChips(){
+  const cnt = s => s==='all' ? state.length : s==='over' ? state.filter(isOver).length : state.filter(r=>r.status===s).length;
+  const list = [['all','Все'],['new','Новые'],['work','В работе'],['check','На проверке'],['done','Выполнены'],['over','Просроченные']];
+  $('#st-chips').innerHTML = list.map(([k,l]) => `<button class="chip ${flt.st===k?'on':''}" data-st="${k}">${l}<i>${cnt(k)}</i></button>`).join('');
+}
+
+function filtered(){
+  let a = state.filter(r => {
+    if (flt.st==='over' ? !isOver(r) : (flt.st!=='all' && r.status!==flt.st)) return false;
+    if (flt.cat && r.cat!==flt.cat) return false;
+    if (flt.exec==='-' ? r.exec : (flt.exec && r.exec!==flt.exec)) return false;
+    if (flt.q){
+      const hay = [r.id,r.house,r.entr,r.apt,r.name,r.phone,r.text,CAT[r.cat].name].join(' ').toLowerCase();
+      if (!hay.includes(flt.q)) return false;
+    }
+    return true;
+  });
+  const pr = {emergency:0, urgent:1, normal:2};
+  if (flt.sort==='new') a.sort((x,y)=> y.created.localeCompare(x.created));
+  if (flt.sort==='deadline') a.sort((x,y)=> (x.status==='done')-(y.status==='done') || dk(x).localeCompare(dk(y)));
+  if (flt.sort==='prio') a.sort((x,y)=> (x.status==='done')-(y.status==='done') || pr[x.prio]-pr[y.prio] || dk(x).localeCompare(dk(y)));
+  return a;
+}
+
+function renderList(){
+  const a = filtered();
+  if (!a.length){ $('#req-list').innerHTML = '<div class="empty">Заявок по выбранным условиям нет</div>'; return; }
+  $('#req-list').innerHTML = a.map(r => {
+    const c = CAT[r.cat], done = r.steps.filter(Boolean).length;
+    const addr = [r.house, r.entr && 'подъезд '+esc(r.entr), r.floor && 'этаж '+esc(r.floor), esc(r.apt)].filter(Boolean).join(', ');
+    return `<article class="req p-${r.prio} s-${r.status}" data-id="${r.id}">
+      <div class="req-top">
+        <span class="num">#${r.id}</span>
+        <span class="badge b-${r.status}">${STATUS[r.status]}</span>
+        ${r.prio!=='normal' ? `<span class="badge ${r.prio==='emergency'?'b-red':'b-org'}">${PRIO[r.prio]}</span>` : ''}
+        ${isOver(r) ? '<span class="badge b-red">Просрочена</span>' : ''}
+        ${!r.deadline && r.status!=='done' ? '<span class="badge">Срок не назначен</span>' : ''}
+        ${assignLate(r) ? '<span class="badge b-red">Исполнитель не назначен > 24 ч</span>' : ''}
+      </div>
+      <div class="req-where">${ic(c.i)} ${c.name} · ${addr}</div>
+      <p class="req-text">${esc(r.text)}</p>
+      <div class="req-meta"><span>${esc(r.name)}, <a href="tel:${esc(r.phone.replace(/[^\d+]/g,''))}">${esc(r.phone)}</a></span><span>Создана ${fmtDT(r.created)}</span><span>Визит: ${esc(r.time||'Любое')}</span>${r.doneAt?`<span>Выполнена ${fmtD(r.doneAt)}</span>`:''}</div>
+      <div class="req-ctl">
+        <label>Исполнитель
+          <select data-f="exec"><option value="">— не назначен —</option>${EXECS.map(e=>`<option value="${e.id}" ${r.exec===e.id?'selected':''}>${e.name}</option>`).join('')}</select>
+        </label>
+        <label>Срок<input type="date" data-f="deadline" value="${r.deadline}"></label>
+        <label>Статус
+          <select data-f="status">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${r.status===k?'selected':''}>${v}</option>`).join('')}</select>
+        </label>
+      </div>
+      <div class="req-send">
+        <button class="btn btn-o btn-sm" data-act="send" ${r.exec ? '' : 'disabled title="Сначала назначьте исполнителя"'}>
+          <svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>Отправить задачу исполнителю</button>
+        ${r.sentAt ? `<span class="sent">✓ Отправлено ${fmtDT(r.sentAt)} · ${esc(r.sentVia)}</span>` : (r.exec ? '<span class="unsent">Задача ещё не отправлена</span>' : '<span>Назначьте исполнителя, чтобы отправить задачу</span>')}
+      </div>
+      <details class="cl">
+        <summary>Чек-лист ${done}/6 <span class="pbar"><i style="width:${done/6*100}%"></i></span></summary>
+        <div class="cl-items">${STEP_SHORT.map((s,i)=>`<label><input type="checkbox" data-step="${i}" ${r.steps[i]?'checked':''}><span>${s}</span></label>`).join('')}</div>
+      </details>
+    </article>`;
+  }).join('');
+}
+
+function setStatus(r, st){
+  r.status = st;
+  if (st==='done'){ r.doneAt = todayISO(); r.steps = r.steps.map((v,i)=> i<5 ? true : v); }
+  else delete r.doneAt;
+  if (st==='check'){ r.steps = r.steps.map((v,i)=> i<4 ? true : v); }
+  if (st==='work'){ r.steps[0] = true; }
+}
+
+$('#req-list').addEventListener('change', e => {
+  if (!isAdmin) return;
+  const card = e.target.closest('.req'); if(!card) return;
+  const r = state.find(x=>x.id===card.dataset.id); if(!r) return;
+  const f = e.target.dataset.f, stp = e.target.dataset.step;
+  const openCl = card.querySelector('details').open;
+  if (f==='exec'){
+    r.exec = e.target.value; delete r.sentAt; delete r.sentVia;
+    if (r.exec){ r.steps[0]=true; r.steps[2]=true; if (r.status==='new') setStatus(r,'work'); toast(`${r.id}: назначен ${EX[r.exec].name.split(' —')[0]}`); }
+    else { r.steps[2]=false; toast(`${r.id}: исполнитель снят`); }
+  } else if (f==='deadline'){
+    r.deadline = e.target.value; toast(r.deadline ? `${r.id}: срок до ${fmtD(r.deadline)}` : `${r.id}: срок снят`);
+  } else if (f==='status'){
+    setStatus(r, e.target.value); toast(`${r.id}: статус «${STATUS[r.status]}»`);
+  } else if (stp!==undefined){
+    r.steps[+stp] = e.target.checked;
+    const d = r.steps.filter(Boolean).length;
+    if (d===6 && r.status!=='done'){ setStatus(r,'done'); toast(`${r.id}: заявка закрыта`); }
+    else if (r.steps[3] && r.status==='work'){ r.status='check'; toast(`${r.id}: передана на проверку`); }
+    else if (!r.steps[5] && r.status==='done'){ r.status='check'; delete r.doneAt; toast(`${r.id}: возвращена на проверку`); }
+  }
+  save();
+  renderKpis(); renderChips(); renderList(); renderSide();
+  const nc = document.querySelector(`.req[data-id="${r.id}"] details`);
+  if (nc && (openCl || stp!==undefined)) nc.open = true;
+});
+
+function renderSide(){
+  // ring
+  const done = state.filter(r=>r.status==='done');
+  const onTime = done.filter(r=>!r.doneAt || !r.deadline || r.doneAt<=r.deadline).length;
+  const pct = done.length ? Math.round(onTime/done.length*100) : 0;
+  const C = 2*Math.PI*38;
+  $('#ring').innerHTML = `<svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="38" fill="none" stroke="#E1E8F3" stroke-width="10"/>
+    <circle cx="46" cy="46" r="38" fill="none" stroke="#1E9E6A" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*pct/100} ${C}" transform="rotate(-90 46 46)"/>
+    <text x="46" y="52" text-anchor="middle" font-family="Manrope,sans-serif" font-weight="800" font-size="18" fill="#123A76">${pct}%</text></svg>
+    <p>${onTime} из ${done.length} выполненных заявок закрыты в срок. Активных: <b>${state.length-done.length}</b>, из них просрочено: <b style="color:var(--red)">${state.filter(isOver).length}</b>.</p>`;
+  // stack
+  const cols = {new:'#3A6FC4', work:'#F28C1E', check:'#7B61D1', done:'#1E9E6A'};
+  const tot = state.length || 1;
+  $('#st-stack').innerHTML = `<div class="stack">${Object.keys(STATUS).map(k=>{const n=state.filter(r=>r.status===k).length; return n?`<i style="width:${n/tot*100}%;background:${cols[k]}" title="${STATUS[k]}: ${n}"></i>`:'';}).join('')}</div>
+    <div class="legend">${Object.keys(STATUS).map(k=>`<span style="--c:${cols[k]}">${STATUS[k]} — ${state.filter(r=>r.status===k).length}</span>`).join('')}</div>`;
+  // categories
+  const cc = CATS.map(c=>({n:c.name, v:state.filter(r=>r.cat===c.id).length})).filter(x=>x.v).sort((a,b)=>b.v-a.v);
+  const mx = Math.max(1,...cc.map(x=>x.v));
+  $('#cat-bars').innerHTML = cc.map(x=>`<div class="bar-row"><div class="lbl"><span>${x.n}</span><b>${x.v}</b></div><div class="bar"><i style="width:${x.v/mx*100}%"></i></div></div>`).join('') || '<small>Нет данных</small>';
+  // executors
+  const ee = EXECS.map(e=>({n:e.name.split(' —')[0], v:state.filter(r=>r.exec===e.id && r.status!=='done').length, o:state.filter(r=>r.exec===e.id && isOver(r)).length}));
+  const unassigned = state.filter(r=>!r.exec && r.status!=='done').length;
+  const me = Math.max(1,...ee.map(x=>x.v), unassigned);
+  $('#exec-bars').innerHTML = ee.map(x=>`<div class="bar-row"><div class="lbl"><span>${x.n}${x.o?` <span style="color:var(--red)">· просрочено ${x.o}</span>`:''}</span><b>${x.v}</b></div><div class="bar o"><i style="width:${x.v/me*100}%"></i></div></div>`).join('')
+    + `<div class="bar-row"><div class="lbl"><span style="color:var(--muted)">Не назначены</span><b>${unassigned}</b></div><div class="bar"><i style="width:${unassigned/me*100}%;background:#9AA7BA"></i></div></div>`;
+  // overdue
+  const od = state.filter(isOver).sort((a,b)=>a.deadline.localeCompare(b.deadline));
+  $('#od-list').innerHTML = od.length ? od.map(r=>`<li><span><b>#${r.id}</b> ${CAT[r.cat].name}, ${r.house}</span><span>до ${fmtD(r.deadline)}</span></li>`).join('')
+    : '<li style="background:var(--green-l);color:var(--green);font-weight:600">Просроченных заявок нет 👍</li>';
+}
+
+/* ---------- отправка задачи исполнителю ---------- */
+let sendReq = null;
+const digits = p => String(p||'').replace(/\D/g,'');
+function taskText(r){
+  const addr = ['ЖК «Панорама парк»', r.house, r.entr && 'подъезд '+r.entr, r.floor && 'этаж '+r.floor, r.apt].filter(Boolean).join(', ');
+  return [
+    `Сервис «Умный дом» — задача ${r.id}`,
+    `Вид работ: ${CAT[r.cat].name}`,
+    `Адрес: ${addr}`,
+    `Что сделать: ${r.text}`,
+    `Срочность: ${PRIO[r.prio]}`,
+    `Срок: ${r.deadline ? 'до '+fmtD(r.deadline)+'.'+r.deadline.slice(0,4) : 'уточнить у администратора'}`,
+    `Житель: ${r.name}, ${r.phone}`,
+    `Удобное время визита: ${r.time || 'Любое'}`,
+    'После выполнения пришлите фото «до» и «после» администратору.',
+    'Диспетчерская: +7 (702) 886-38-88'
+  ].join('\n');
+}
+function updSendLinks(){
+  if (!sendReq) return;
+  const e = EX[sendReq.exec], d = digits(e.phone), ok = d.length === 11;
+  const t = encodeURIComponent($('#send-text').value);
+  $('#send-sms').href = ok ? `sms:+${d}?&body=${t}` : '#';
+  $('#send-wa').href = ok ? `https://wa.me/${d}?text=${t}` : '#';
+  $('#send-tg').href = `https://t.me/share/url?url=${encodeURIComponent('https://t.me')}&text=${t}`;
+  $('#send-sms').classList.toggle('off', !ok);
+  $('#send-wa').classList.toggle('off', !ok);
+}
+function openSend(r){
+  sendReq = r;
+  const e = EX[r.exec], ok = digits(e.phone).length === 11;
+  $('#send-to').innerHTML = `Кому: <b>${esc(e.name)}</b>, ${ok ? `<a href="tel:+${digits(e.phone)}">${esc(e.phone)}</a>` : '<span style="color:var(--red)">телефон не указан — добавьте его во вкладке «Исполнители»</span>'}`;
+  $('#send-text').value = taskText(r);
+  updSendLinks();
+  $('#send').classList.add('on');
+}
+function markSent(via){
+  if (!sendReq) return;
+  sendReq.sentAt = new Date().toISOString(); sendReq.sentVia = via;
+  sendReq.steps[2] = true; save(); renderList();
+  toast(`${sendReq.id}: задача передана исполнителю (${via})`);
+}
+$('#send-text').addEventListener('input', updSendLinks);
+$('#send').querySelector('.send-btns').addEventListener('click', async e => {
+  const b = e.target.closest('[data-via]'); if (!b || b.classList.contains('off')) return;
+  if (b.id === 'send-copy'){
+    const txt = $('#send-text').value;
+    try { await navigator.clipboard.writeText(txt); }
+    catch(err){ const ta = $('#send-text'); ta.select(); document.execCommand('copy'); }
+    toast('Текст скопирован — вставьте его в любой мессенджер');
+  }
+  markSent(b.dataset.via);
+});
+$('#send-close').addEventListener('click', ()=> $('#send').classList.remove('on'));
+$('#send').addEventListener('click', e => { if(e.target.id==='send') e.currentTarget.classList.remove('on'); });
+$('#req-list').addEventListener('click', e => {
+  const b = e.target.closest('[data-act="send"]'); if (!b || !isAdmin) return;
+  const r = state.find(x => x.id === b.closest('.req').dataset.id);
+  if (r && r.exec) openSend(r);
+});
+
+/* ---------- вкладки администратора ---------- */
+let admTab = 'req';
+function showAdmTab(t){
+  admTab = t;
+  document.querySelectorAll('#adm-tabs .chip').forEach(c => c.classList.toggle('on', c.dataset.tab===t));
+  $('#adm-req').hidden = t!=='req'; $('#adm-ideas').hidden = t!=='ideas'; $('#adm-execs').hidden = t!=='execs';
+  if (t==='ideas') renderAdmIdeas();
+  if (t==='execs') renderExecs();
+}
+$('#adm-tabs').addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) showAdmTab(c.dataset.tab); });
+
+function renderExecs(){
+  $('#exec-edit').innerHTML = EXECS.map(e => {
+    const act = state.filter(r => r.exec===e.id && r.status!=='done').length;
+    return `<div class="exec-row" data-ex="${e.id}"><div><b>${esc(e.name)}</b></div>
+      <input type="tel" value="${esc(e.phone)}" placeholder="+7 (___) ___-__-__">
+      <small>В работе: ${act}</small></div>`;
+  }).join('');
+}
+$('#exec-edit').addEventListener('input', e => { if (e.target.matches('input')) e.target.value = fmtPhone(e.target.value); });
+$('#exec-edit').addEventListener('change', e => {
+  if (!isAdmin || !e.target.matches('input')) return;
+  const ex = EX[e.target.closest('.exec-row').dataset.ex];
+  ex.phone = e.target.value; saveExecPhones();
+  toast(`Телефон сохранён: ${ex.name.split(' —')[0]}`);
+});
+
+/* ---------- предложения жителей ---------- */
+const TOPICS = ['Благоустройство двора','Детские и спортивные площадки','Парковка и безопасность','Чистота и порядок','Подъезды и лифты','Экономия ресурсов','Другое'];
+const ISTATUS = {new:'Новое', review:'Рассматривается', planned:'Принято в план', done:'Реализовано', rejected:'Отклонено'};
+const ISTCLS = {new:'b-new', review:'b-work', planned:'b-check', done:'b-done', rejected:'b-red'};
+const LS_I = 'uk_panorama_park_ideas_v1', LS_L = 'uk_panorama_park_liked_v1';
+function seedIdeas(){
+  const d = n => addHours(new Date(), -24*n).toISOString();
+  return [
+    {id:'I-1', topic:'Детские и спортивные площадки', house:'Весь ЖК', name:'Асель', title:'Workout-площадка для подростков', text:'Предлагаю поставить турники и брусья рядом со стадионом — детям постарше сейчас негде заниматься.', created:d(12), likes:34, status:'planned', reply:'Спасибо! Включили в план благоустройства на весну. Проект покажем на собрании жителей.'},
+    {id:'I-2', topic:'Парковка и безопасность', house:'Дом 41А', name:'Руслан', title:'Велопарковка у подъездов', text:'Нужны закрытые стойки для велосипедов и самокатов, чтобы не заносить их в квартиры и холлы.', created:d(6), likes:21, status:'review', reply:''},
+    {id:'I-3', topic:'Благоустройство двора', house:'Весь ЖК', name:'Жители дома 41', title:'Больше скамеек и тени на площадке', text:'Летом на детской площадке очень жарко. Можно добавить навесы и скамейки для родителей.', created:d(3), likes:17, status:'new', reply:''},
+    {id:'I-4', topic:'Экономия ресурсов', house:'Дом 41В', name:'Ирина', title:'Датчики движения в подъездах', text:'Свет на этажах горит всю ночь. С датчиками движения можно сократить расходы на электричество.', created:d(20), likes:12, status:'done', reply:'Реализовано: датчики установлены во всех подъездах дома 41В.'}
+  ];
+}
+let ideas, liked;
+try { ideas = JSON.parse(localStorage.getItem(LS_I)); } catch(e) {}
+if (!Array.isArray(ideas)) ideas = seedIdeas();
+try { liked = JSON.parse(localStorage.getItem(LS_L)); } catch(e) {}
+if (!Array.isArray(liked)) liked = [];
+const saveIdeas = () => { try { localStorage.setItem(LS_I, JSON.stringify(ideas)); localStorage.setItem(LS_L, JSON.stringify(liked)); } catch(e) {} };
+saveIdeas();
+let ideaSort = 'top';
+$('#i-topic').innerHTML = TOPICS.map(t=>`<option>${t}</option>`).join('');
+
+function ideaCard(i, adm){
+  return `<article class="idea" data-idea="${i.id}">
+    ${adm ? `<div class="like" style="cursor:default">${i.likes}<small>голосов</small></div>`
+          : `<button type="button" class="like ${liked.includes(i.id)?'on':''}" data-like aria-label="Поддержать">▲ ${i.likes}<small>поддержать</small></button>`}
+    <div class="idea-body">
+      <h4>${esc(i.title)}</h4>
+      <p>${esc(i.text)}</p>
+      <div class="meta"><span class="badge ${ISTCLS[i.status]}">${ISTATUS[i.status]}</span><span>${esc(i.topic)}</span><span>${esc(i.house)}</span><span>${esc(i.name || 'Житель')}, ${fmtD(i.created)}</span></div>
+      ${!adm && i.reply ? `<div class="reply"><b>Ответ Сервиса «Умный дом»:</b> ${esc(i.reply)}</div>` : ''}
+      ${adm ? `<div class="idea-adm">
+        <label>Статус<select data-if="status">${Object.entries(ISTATUS).map(([k,v])=>`<option value="${k}" ${i.status===k?'selected':''}>${v}</option>`).join('')}</select></label>
+        <label>Ответ жителям<textarea data-if="reply" placeholder="Напишите ответ — он появится под предложением">${esc(i.reply)}</textarea></label>
+      </div>` : ''}
+    </div>
+  </article>`;
+}
+function renderIdeas(){
+  const a = [...ideas].sort((x,y) => ideaSort==='top' ? y.likes-x.likes || y.created.localeCompare(x.created) : y.created.localeCompare(x.created));
+  $('#idea-list').innerHTML = a.length ? a.map(i=>ideaCard(i,false)).join('') : '<div class="empty">Пока нет предложений — будьте первым!</div>';
+  const n = ideas.filter(i=>i.status==='new').length;
+  $('#ideas-cnt').textContent = n ? n : '';
+}
+function renderAdmIdeas(){
+  const a = [...ideas].sort((x,y)=> (x.status==='new' ? 0 : 1) - (y.status==='new' ? 0 : 1) || y.created.localeCompare(x.created));
+  $('#adm-idea-list').innerHTML = a.length ? a.map(i=>ideaCard(i,true)).join('') : '<div class="empty">Предложений пока нет</div>';
+}
+$('#idea-sort').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (!c) return;
+  ideaSort = c.dataset.sort;
+  document.querySelectorAll('#idea-sort .chip').forEach(x => x.classList.toggle('on', x===c));
+  renderIdeas();
+});
+$('#idea-list').addEventListener('click', e => {
+  const b = e.target.closest('[data-like]'); if (!b) return;
+  const i = ideas.find(x => x.id === b.closest('.idea').dataset.idea); if (!i) return;
+  const k = liked.indexOf(i.id);
+  if (k >= 0){ liked.splice(k,1); i.likes = Math.max(0, i.likes-1); }
+  else { liked.push(i.id); i.likes++; }
+  saveIdeas(); renderIdeas();
+});
+$('#idea-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target.elements;
+  f.title.style.borderColor = f.text.style.borderColor = '';
+  if (f.title.value.trim().length < 3){ f.title.style.borderColor='var(--red)'; f.title.focus(); toast('Коротко опишите идею'); return; }
+  if (f.text.value.trim().length < 10){ f.text.style.borderColor='var(--red)'; f.text.focus(); toast('Добавьте пару слов подробнее'); return; }
+  const id = 'I-' + (Math.max(0, ...ideas.map(i => +i.id.slice(2) || 0)) + 1);
+  ideas.unshift({id, topic:f.topic.value, house:f.house.value, name:f.name.value.trim(), title:f.title.value.trim(), text:f.text.value.trim(), created:new Date().toISOString(), likes:1, status:'new', reply:''});
+  liked.push(id); saveIdeas();
+  e.target.reset(); ideaSort = 'new';
+  document.querySelectorAll('#idea-sort .chip').forEach(x => x.classList.toggle('on', x.dataset.sort==='new'));
+  renderIdeas(); toast('Спасибо! Ваше предложение опубликовано');
+});
+$('#adm-idea-list').addEventListener('change', e => {
+  if (!isAdmin) return;
+  const fld = e.target.dataset.if; if (!fld) return;
+  const i = ideas.find(x => x.id === e.target.closest('.idea').dataset.idea); if (!i) return;
+  i[fld] = fld==='reply' ? e.target.value.trim() : e.target.value;
+  saveIdeas(); renderIdeas();
+  if (fld==='status') renderAdmIdeas();
+  toast(fld==='reply' ? 'Ответ сохранён' : `Статус: «${ISTATUS[i.status]}»`);
+});
+renderIdeas();
+
+$('#reset-btn').addEventListener('click', () => {
+  if (!isAdmin) return;
+  if (!confirm('Заменить текущие заявки и предложения демонстрационными данными?')) return;
+  state = seed(); save(); ideas = seedIdeas(); liked = []; saveIdeas(); renderIdeas();
+  renderControl(); if (admTab!=='req') showAdmTab(admTab); toast('Загружены демо-данные');
+});
+$('#export-btn').addEventListener('click', () => {
+  if (!isAdmin) return;
+  const head = ['Номер','Создана','Вид работ','Дом','Подъезд','Этаж','Место','Житель','Телефон','Описание','Срочность','Статус','Исполнитель','Срок','Выполнена','Чек-лист'];
+  const rows = state.map(r=>[r.id, fmtDT(r.created), CAT[r.cat].name, r.house, r.entr, r.floor, r.apt, r.name, r.phone, r.text, PRIO[r.prio], STATUS[r.status], r.exec?EX[r.exec].name:'', r.deadline, r.doneAt||'', r.steps.filter(Boolean).length+'/6']);
+  const csv = '﻿' + [head,...rows].map(row=>row.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(';')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download = `zayavki_${todayISO()}.csv`; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+});
+
+go(location.hash==='#control' ? 'control' : 'home', false);
+})();
+</script>
+</body>
+</html>
