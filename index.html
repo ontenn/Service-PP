@@ -239,7 +239,7 @@ details.cl[open] summary::after{transform:rotate(180deg)}
 .req-send{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:.8rem;color:var(--muted)}
 .req-send .sent{color:var(--green);font-weight:700}
 .req-send .unsent{color:var(--orange-d);font-weight:700}
-.exec-row{display:grid;grid-template-columns:1fr 210px 110px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.exec-row{display:grid;grid-template-columns:1fr 200px 150px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:.9rem}
 .exec-row:last-child{border-bottom:0}
 .exec-row input{padding:8px 10px;font-size:.9rem}
 .exec-row small{color:var(--muted)}
@@ -248,7 +248,7 @@ details.cl[open] summary::after{transform:rotate(180deg)}
   .idea{padding:14px}
   .idea-adm{grid-template-columns:1fr}
   .exec-row{grid-template-columns:1fr 1fr}
-  .exec-row>div:first-child{grid-column:1/-1}
+  .exec-row>input:first-child{grid-column:1/-1}
 }
 
 /* responsive */
@@ -331,13 +331,13 @@ details.cl[open] summary::after{transform:rotate(180deg)}
       <div class="hero-card">
         <h3>Работаем для вас</h3>
         <div class="hero-stats">
-          <div><b id="hs-total">0</b><span>заявок принято</span></div>
-          <div><b id="hs-done">0%</b><span>выполнено</span></div>
+          <div><b>24 ч</b><span>назначение исполнителя</span></div>
+          <div><b>3</b><span>дома: 41, 41А, 41В</span></div>
           <div><b>24/7</b><span>аварийная служба</span></div>
         </div>
         <label class="f" for="track-in">Проверить статус заявки</label>
         <div class="track" style="margin-top:6px">
-          <input id="track-in" placeholder="Номер, например Z-1003" autocomplete="off">
+          <input id="track-in" placeholder="Номер, например Z-1001" autocomplete="off">
           <button class="btn btn-b btn-sm" id="track-btn">Найти</button>
         </div>
         <div class="track-res" id="track-res"></div>
@@ -460,7 +460,6 @@ details.cl[open] summary::after{transform:rotate(180deg)}
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-w btn-sm" id="export-btn">Выгрузить CSV</button>
-          <button class="btn btn-w btn-sm" id="reset-btn">Демо-данные</button>
           <button class="btn btn-b btn-sm" id="logout-btn">Выйти</button>
         </div>
       </div>
@@ -591,21 +590,19 @@ const CATS = [
   {id:'other', name:'Другое', sla:72, d:'Домофон, шлагбаум, видеонаблюдение, прочие вопросы', i:'<path d="M4 5h16v11H8l-4 4z"/>'}
 ];
 const CAT = Object.fromEntries(CATS.map(c=>[c.id,c]));
-const EXECS = [
-  {id:'ivanov', name:'Иванов А. — сантехник', phone:'+7 (700) 000-00-01'},
-  {id:'petrov', name:'Петров С. — электрик', phone:'+7 (700) 000-00-02'},
-  {id:'sidorova', name:'Сидорова М. — клининг', phone:'+7 (700) 000-00-03'},
-  {id:'lift', name:'«ЛифтСервис» — подрядчик', phone:'+7 (700) 000-00-04'},
-  {id:'akhmetov', name:'Ахметов Р. — ремонт', phone:'+7 (700) 000-00-05'},
-  {id:'kim', name:'Ким Д. — дворник', phone:'+7 (700) 000-00-06'}
-];
-const LS_PH = 'uk_panorama_park_exec_phones_v1';
-try { const ph = JSON.parse(localStorage.getItem(LS_PH)) || {}; EXECS.forEach(e => { if (typeof ph[e.id]==='string') e.phone = ph[e.id]; }); } catch(e) {}
-const saveExecPhones = () => { try { localStorage.setItem(LS_PH, JSON.stringify(Object.fromEntries(EXECS.map(e=>[e.id,e.phone])))); } catch(e) {} };
-const EX = Object.fromEntries(EXECS.map(e=>[e.id,e]));
+// Стартовый список — администратор вписывает ФИО и телефоны во вкладке «Исполнители».
+const DEFAULT_EXECS = ['Сантехник','Электрик','Клининг (уборка)','Лифтовая служба','Мастер по ремонту','Дворник']
+  .map((name,i) => ({id:'e'+(i+1), name, phone:''}));
+const LS_EX = 'uk_pp_executors_v1';
+let EXECS;
+try { EXECS = JSON.parse(localStorage.getItem(LS_EX)); } catch(e) {}
+if (!Array.isArray(EXECS)) EXECS = DEFAULT_EXECS;
+const EX = {};
+const syncEX = () => { Object.keys(EX).forEach(k => delete EX[k]); EXECS.forEach(e => EX[e.id] = e); };
+syncEX();
+const saveExecs = () => { try { localStorage.setItem(LS_EX, JSON.stringify(EXECS)); } catch(e) {} };
 const STATUS = {new:'Новая', work:'В работе', check:'На проверке', done:'Выполнена'};
 const PRIO = {normal:'Обычная', urgent:'Срочная', emergency:'Аварийная'};
-const PRIO_H = {normal:1, urgent:.5, emergency:.15};
 const STEPS = [
   {t:'Приём заявки', w:'до 15 минут', l:['Регистрация и присвоение номера','Уточнение адреса и деталей','Определение срочности']},
   {t:'Осмотр и диагностика', w:'до 24 часов', l:['Выезд мастера участка','Оценка объёма работ','Подбор материалов']},
@@ -615,7 +612,7 @@ const STEPS = [
   {t:'Подтверждение жителем', w:'1–2 дня', l:['Звонок или сообщение жителю','Оценка качества','Закрытие заявки']}
 ];
 const STEP_SHORT = ['Заявка принята','Осмотр проведён','Назначен исполнитель и срок','Работы выполнены','Фотоотчёт и проверка качества','Житель подтвердил'];
-const LS = 'uk_panorama_park_requests_v3';
+const LS = 'uk_pp_requests_v1';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -626,36 +623,9 @@ const fmtD = iso => { if(!iso) return '—'; const [y,m,d] = iso.slice(0,10).spl
 const fmtDT = iso => { const d = new Date(iso); return `${pad(d.getDate())}.${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
 const addHours = (d,h) => new Date(d.getTime() + h*3600e3);
 
-function seed(){
-  const now = new Date();
-  const ago = h => addHours(now, -h);
-  const mk = (n, cat, house, entr, floor, apt, name, text, prio, status, exec, hAgo, stepsN, dlShiftDays) => {
-    const created = ago(hAgo);
-    let dl = addHours(created, CAT[cat].sla * PRIO_H[prio]);
-    if (dlShiftDays !== undefined) dl = addHours(now, dlShiftDays*24);
-    const steps = STEP_SHORT.map((_,i)=> i < stepsN);
-    const r = {id:'Z-'+n, cat, house, entr, floor, apt, name, phone:fmtPhone('770'+(10000000+(n*7919)%90000000)), text, prio, status, exec, created:created.toISOString(), deadline: (status==='new' && !exec) ? '' : isoDate(dl), steps, time:'Любое'};
-    if (status==='done') r.doneAt = isoDate(addHours(created, CAT[cat].sla*PRIO_H[prio]*.7));
-    return r;
-  };
-  return [
-    mk(1001,'light','Дом 41А','2','5','у лифта','Айгуль','Не горит лампочка на 5 этаже возле лифта, вечером очень темно.','normal','done','petrov',120,6),
-    mk(1002,'lift','Дом 41','1','','кабина','Сергей','Лифт останавливается между 7 и 8 этажами, двери открываются с рывком.','urgent','work','lift',30,3,-1),
-    mk(1003,'comm','Дом 41','3','9','кв. 112','Марина','Течёт стояк холодной воды в санузле, мокнет стена у соседей снизу.','emergency','check','ivanov',8,5),
-    mk(1004,'clean','Дом 41В','1','','холл 1 этажа','Ерлан','После переезда соседей в холле остались грязь и строительный мусор.','normal','new','',3,1),
-    mk(1005,'yard','Дом 41А','','','детская площадка','Ольга','Сломана доска на качелях у дома 41А, опасно для детей.','urgent','work','akhmetov',20,3,1),
-    mk(1006,'entrance','Дом 41В','2','1','входная группа','Дмитрий','Доводчик входной двери не работает, дверь хлопает.','normal','work','akhmetov',60,3,2),
-    mk(1007,'waste','Дом 41А','','','контейнерная площадка','Гульнара','Контейнеры переполнены, мусор не вывозили два дня.','urgent','done','kim',50,6),
-    mk(1008,'light','Дом 41','1','','двор','Тимур','Не работает уличный фонарь у парковки дома 41.','normal','new','',1,0),
-    mk(1009,'comm','Дом 41','2','3','кв. 34','Наталья','Батареи в квартире еле тёплые, в соседних — тоже.','normal','work','ivanov',70,3,-2),
-    mk(1010,'other','Дом 41В','','','шлагбаум','Алексей','Шлагбаум на въезде не реагирует на пульт.','normal','done','petrov',160,6),
-    mk(1011,'clean','Дом 41А','3','','лестница','Жанна','Давно не мыли лестничные пролёты с 1 по 4 этаж.','normal','check','sidorova',40,5)
-  ];
-}
-
 let state;
 try { state = JSON.parse(localStorage.getItem(LS)); } catch(e) {}
-if (!Array.isArray(state)) state = seed();
+if (!Array.isArray(state)) state = [];
 function save(){ try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){} }
 save();
 
@@ -710,7 +680,7 @@ function go(page, push=true){
   document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.go===page));
   if (push) history.replaceState(null,'', page==='control' ? '#control' : '#home');
   window.scrollTo(0,0);
-  if (page==='control') renderControl(); else renderHomeStats();
+  if (page==='control') renderControl();
 }
 document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); go(b.dataset.go); }));
 
@@ -733,12 +703,6 @@ $('#f-cat').innerHTML = '<option value="">Выберите вид работ</op
 
 $('#steps').innerHTML = STEPS.map(s => `
   <div class="step"><h3>${s.t}</h3><ul>${s.l.map(x=>`<li>${x}</li>`).join('')}</ul><span class="when">${s.w}</span></div>`).join('');
-
-function renderHomeStats(){
-  $('#hs-total').textContent = state.length;
-  const d = state.filter(r=>r.status==='done').length;
-  $('#hs-done').textContent = state.length ? Math.round(d/state.length*100)+'%' : '0%';
-}
 
 const form = $('#req-form');
 form.elements.phone.addEventListener('input', e => {
@@ -776,7 +740,7 @@ form.addEventListener('submit', e => {
     text:f.text.value.trim(), prio, status:'new', exec:'', created:now.toISOString(),
     deadline: '', steps: STEP_SHORT.map(()=>false)
   };
-  state.unshift(r); save(); renderHomeStats();
+  state.unshift(r); save();
   $('#m-num').textContent = r.id;
   $('#m-text').textContent = 'Исполнитель будет назначен в течение 24 часов, срок выполнения установит администратор. Сохраните номер, чтобы проверить статус.' + (prio==='emergency' ? ' Для аварии обязательно позвоните в диспетчерскую!' : '');
   $('#modal').classList.add('on');
@@ -801,7 +765,7 @@ $('#track-in').addEventListener('keydown', e => { if(e.key==='Enter') track(); }
 /* ---------- page 2 ---------- */
 const flt = {st:'all', q:'', cat:'', exec:'', sort:'new'};
 $('#fl-cat').innerHTML = '<option value="">Все виды услуг</option>' + CATS.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
-$('#fl-exec').innerHTML = '<option value="">Все исполнители</option><option value="-">Не назначен</option>' + EXECS.map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
+fillExecFilter();
 $('#q').addEventListener('input', e => { flt.q = e.target.value.toLowerCase(); renderList(); });
 $('#fl-cat').addEventListener('change', e => { flt.cat = e.target.value; renderList(); });
 $('#fl-exec').addEventListener('change', e => { flt.exec = e.target.value; renderList(); });
@@ -869,7 +833,7 @@ function renderList(){
       <div class="req-meta"><span>${esc(r.name)}, <a href="tel:${esc(r.phone.replace(/[^\d+]/g,''))}">${esc(r.phone)}</a></span><span>Создана ${fmtDT(r.created)}</span><span>Визит: ${esc(r.time||'Любое')}</span>${r.doneAt?`<span>Выполнена ${fmtD(r.doneAt)}</span>`:''}</div>
       <div class="req-ctl">
         <label>Исполнитель
-          <select data-f="exec"><option value="">— не назначен —</option>${EXECS.map(e=>`<option value="${e.id}" ${r.exec===e.id?'selected':''}>${e.name}</option>`).join('')}</select>
+          <select data-f="exec"><option value="">— не назначен —</option>${EXECS.map(e=>`<option value="${e.id}" ${r.exec===e.id?'selected':''}>${esc(e.name)}</option>`).join('')}</select>
         </label>
         <label>Срок<input type="date" data-f="deadline" value="${r.deadline}"></label>
         <label>Статус
@@ -1027,39 +991,54 @@ function showAdmTab(t){
 }
 $('#adm-tabs').addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) showAdmTab(c.dataset.tab); });
 
+function fillExecFilter(){
+  const v = $('#fl-exec').value;
+  $('#fl-exec').innerHTML = '<option value="">Все исполнители</option><option value="-">Не назначен</option>' + EXECS.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('');
+  $('#fl-exec').value = EX[v] || v==='-' ? v : '';
+  flt.exec = $('#fl-exec').value;
+}
 function renderExecs(){
   $('#exec-edit').innerHTML = EXECS.map(e => {
     const act = state.filter(r => r.exec===e.id && r.status!=='done').length;
-    return `<div class="exec-row" data-ex="${e.id}"><div><b>${esc(e.name)}</b></div>
-      <input type="tel" value="${esc(e.phone)}" placeholder="+7 (___) ___-__-__">
-      <small>В работе: ${act}</small></div>`;
-  }).join('');
+    return `<div class="exec-row" data-ex="${e.id}">
+      <input data-x="name" value="${esc(e.name)}" placeholder="ФИО и специальность">
+      <input data-x="phone" type="tel" value="${esc(e.phone)}" placeholder="+7 (___) ___-__-__">
+      <div style="display:flex;align-items:center;gap:8px;justify-content:space-between"><small>В работе: ${act}</small>
+      <button type="button" class="btn btn-w btn-sm" data-del title="Удалить" style="padding:6px 10px">✕</button></div></div>`;
+  }).join('') + '<button type="button" class="btn btn-b btn-sm" id="exec-add" style="margin-top:14px">+ Добавить исполнителя</button>';
 }
-$('#exec-edit').addEventListener('input', e => { if (e.target.matches('input')) e.target.value = fmtPhone(e.target.value); });
+$('#exec-edit').addEventListener('input', e => { if (e.target.dataset.x==='phone') e.target.value = fmtPhone(e.target.value); });
 $('#exec-edit').addEventListener('change', e => {
-  if (!isAdmin || !e.target.matches('input')) return;
+  const x = e.target.dataset.x; if (!isAdmin || !x) return;
   const ex = EX[e.target.closest('.exec-row').dataset.ex];
-  ex.phone = e.target.value; saveExecPhones();
-  toast(`Телефон сохранён: ${ex.name.split(' —')[0]}`);
+  const v = e.target.value.trim();
+  if (x==='name' && !v){ e.target.value = ex.name; toast('Имя не может быть пустым'); return; }
+  ex[x] = v; saveExecs(); fillExecFilter(); renderList(); renderSide();
+  toast(x==='phone' ? `Телефон сохранён: ${ex.name}` : 'Исполнитель переименован');
+});
+$('#exec-edit').addEventListener('click', e => {
+  if (!isAdmin) return;
+  if (e.target.id==='exec-add'){
+    const id = 'e' + (Math.max(0, ...EXECS.map(x => +x.id.slice(1) || 0)) + 1);
+    EXECS.push({id, name:'Новый исполнитель', phone:''}); syncEX(); saveExecs(); fillExecFilter(); renderExecs();
+    const inp = document.querySelector(`.exec-row[data-ex="${id}"] [data-x=name]`); inp.focus(); inp.select();
+    return;
+  }
+  const d = e.target.closest('[data-del]'); if (!d) return;
+  const ex = EX[d.closest('.exec-row').dataset.ex];
+  if (state.some(r => r.exec===ex.id)){ toast('Нельзя удалить: на исполнителе есть заявки. Сначала переназначьте их.'); return; }
+  if (!confirm(`Удалить исполнителя «${ex.name}»?`)) return;
+  EXECS = EXECS.filter(x => x !== ex); syncEX(); saveExecs(); fillExecFilter(); renderExecs(); renderSide();
 });
 
 /* ---------- предложения жителей ---------- */
 const TOPICS = ['Благоустройство двора','Детские и спортивные площадки','Парковка и безопасность','Чистота и порядок','Подъезды и лифты','Экономия ресурсов','Другое'];
 const ISTATUS = {new:'Новое', review:'Рассматривается', planned:'Принято в план', done:'Реализовано', rejected:'Отклонено'};
 const ISTCLS = {new:'b-new', review:'b-work', planned:'b-check', done:'b-done', rejected:'b-red'};
-const LS_I = 'uk_panorama_park_ideas_v1', LS_L = 'uk_panorama_park_liked_v1';
-function seedIdeas(){
-  const d = n => addHours(new Date(), -24*n).toISOString();
-  return [
-    {id:'I-1', topic:'Детские и спортивные площадки', house:'Весь ЖК', name:'Асель', title:'Workout-площадка для подростков', text:'Предлагаю поставить турники и брусья рядом со стадионом — детям постарше сейчас негде заниматься.', created:d(12), likes:34, status:'planned', reply:'Спасибо! Включили в план благоустройства на весну. Проект покажем на собрании жителей.'},
-    {id:'I-2', topic:'Парковка и безопасность', house:'Дом 41А', name:'Руслан', title:'Велопарковка у подъездов', text:'Нужны закрытые стойки для велосипедов и самокатов, чтобы не заносить их в квартиры и холлы.', created:d(6), likes:21, status:'review', reply:''},
-    {id:'I-3', topic:'Благоустройство двора', house:'Весь ЖК', name:'Жители дома 41', title:'Больше скамеек и тени на площадке', text:'Летом на детской площадке очень жарко. Можно добавить навесы и скамейки для родителей.', created:d(3), likes:17, status:'new', reply:''},
-    {id:'I-4', topic:'Экономия ресурсов', house:'Дом 41В', name:'Ирина', title:'Датчики движения в подъездах', text:'Свет на этажах горит всю ночь. С датчиками движения можно сократить расходы на электричество.', created:d(20), likes:12, status:'done', reply:'Реализовано: датчики установлены во всех подъездах дома 41В.'}
-  ];
-}
+const LS_I = 'uk_pp_ideas_v1', LS_L = 'uk_pp_liked_v1';
 let ideas, liked;
 try { ideas = JSON.parse(localStorage.getItem(LS_I)); } catch(e) {}
-if (!Array.isArray(ideas)) ideas = seedIdeas();
+if (!Array.isArray(ideas)) ideas = [];
 try { liked = JSON.parse(localStorage.getItem(LS_L)); } catch(e) {}
 if (!Array.isArray(liked)) liked = [];
 const saveIdeas = () => { try { localStorage.setItem(LS_I, JSON.stringify(ideas)); localStorage.setItem(LS_L, JSON.stringify(liked)); } catch(e) {} };
@@ -1131,12 +1110,6 @@ $('#adm-idea-list').addEventListener('change', e => {
 });
 renderIdeas();
 
-$('#reset-btn').addEventListener('click', () => {
-  if (!isAdmin) return;
-  if (!confirm('Заменить текущие заявки и предложения демонстрационными данными?')) return;
-  state = seed(); save(); ideas = seedIdeas(); liked = []; saveIdeas(); renderIdeas();
-  renderControl(); if (admTab!=='req') showAdmTab(admTab); toast('Загружены демо-данные');
-});
 $('#export-btn').addEventListener('click', () => {
   if (!isAdmin) return;
   const head = ['Номер','Создана','Вид работ','Дом','Подъезд','Этаж','Место','Житель','Телефон','Описание','Срочность','Статус','Исполнитель','Срок','Выполнена','Чек-лист'];
